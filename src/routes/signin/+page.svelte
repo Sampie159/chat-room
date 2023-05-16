@@ -7,24 +7,25 @@
 
 <title>Login</title>
 
-<div>
-	<h1>Login</h1>
-	<form method="post" action="?/signin" use:enhance>
-		<label for="username">Username</label> <br />
-		<input type="text" id="username" name="username" /> <br />
-		<label for="password">Password</label> <br />
-		<input type="password" id="password" name="password" /> <br />
-		<input type="submit" class="button" value="Sign In" />
-	</form>
-	<p>Don't have an account?</p>
-	<a href="/signup">
-		<button>Sign Up</button>
-	</a>
-	{#if form?.error}
-		<ul class="error">
-			{#each form.errors as { message }}
-				<li>{message}</li>
-			{/each}
-		</ul>
-	{/if}
+<div class="flex h-screen">
+	<div class="m-auto flex flex-col items-center">
+		<h1>Login</h1>
+		<form method="post" action="?/signin" use:enhance>
+			<label for="username">Username</label> <br />
+			<input type="text" id="username" name="username" /> <br />
+			{#if form?.errors?.username}
+				<p>Username not valid.</p>
+			{/if}
+			<label for="password">Password</label> <br />
+			<input type="password" id="password" name="password" /> <br />
+			{#if form?.errors?.password}
+				<p>Password not valid.</p>
+			{/if}
+			<input type="submit" class="button" value="Sign In" />
+		</form>
+		<p>Don't have an account?</p>
+		<a href="/signup">
+			<button>Sign Up</button>
+		</a>
+	</div>
 </div>

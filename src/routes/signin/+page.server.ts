@@ -3,10 +3,7 @@ import { z } from 'zod';
 import type { PageServerLoad } from './$types';
 import { auth } from '$lib/server/lucia';
 
-export const load: PageServerLoad = async ({ locals }) => {
-	const session = await locals.auth.validate();
-	if (session) throw redirect(302, '/');
-};
+export const load: PageServerLoad = async () => {};
 
 export const actions: Actions = {
 	signin: async ({ request, locals }) => {
@@ -20,14 +17,12 @@ export const actions: Actions = {
 		const result = schema.safeParse(form);
 
 		if (!result.success) {
-			const errors = result.error.errors.map((error) => {
-				return {
-					field: error.path[0],
-					message: error.message
-				};
-			});
+			const data = {
+				data: form,
+				errors: result.error.flatten().fieldErrors
+			};
 
-			return fail(400, { error: true, errors });
+			return fail(400, data);
 		}
 
 		try {
