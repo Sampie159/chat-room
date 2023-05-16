@@ -1,5 +1,5 @@
 <script>
-	import '../globals.postcss';
+	import '$lib/globals.postcss';
 </script>
 
 <slot />

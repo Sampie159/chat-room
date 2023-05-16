@@ -7,25 +7,28 @@
 
 <title>Sign Up</title>
 
-<div class="flex h-screen">
-	<div class="flex flex-col m-auto items-center">
-		<h1>Create an account</h1>
+<div class="outerDiv">
+	<div class="innerDiv">
 		<form method="post" action="?/signup" use:enhance>
+			<h1>Create an account</h1>
 			<label for="username">Username</label> <br />
-			<input type="text" id="username" name="username" /> <br />
+			<input class="input" type="text" id="username" name="username" /> <br />
 			{#if form?.errors?.username}
-				<p>Username not valid.</p>
+				<p class="error">Invalid username!</p>
 			{/if}
 			<label for="password">Password</label> <br />
-			<input type="password" id="password" name="password" /> <br />
+			<input class="input" type="password" id="password" name="password" /> <br />
 			{#if form?.errors?.password}
-				<p>Password not valid.</p>
+				<p class="error">Invalid password!</p>
 			{/if}
 			<input type="submit" class="button" value="Sign Up" />
+
+			<div class="signswitch">
+				<p>Already have an account?</p>
+				<a href="/signin">
+					<button>Sign In</button>
+				</a>
+			</div>
 		</form>
-		<p>Already have an account?</p>
-		<a href="/signin">
-			<button>Sign In</button>
-		</a>
 	</div>
 </div>

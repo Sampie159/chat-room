@@ -17,7 +17,7 @@ model AuthUser {
   auth_key     AuthKey[]
   username String @unique
   messages Message[]
-  rooms UsersInRooms[]
+  rooms Room[]
 
   @@map("auth_user")
 }
@@ -60,16 +60,6 @@ model Message {
 model Room {
   id String @id @default(uuid())
   messages Message[]
-  users UsersInRooms[]
+  users AuthUser[]
 }
 
-model UsersInRooms {
-  user AuthUser @relation(fields: [user_id], references: [id])
-  user_id String
-  room Room @relation(fields: [room_id], references: [id])
-  room_id String
-
-  @@id([user_id, room_id])
-  @@index([room_id])
-  @@index([user_id])
-}
