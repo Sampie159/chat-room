@@ -1,12 +1,10 @@
+import { redirect, fail } from '@sveltejs/kit';
 import { z } from 'zod';
-import type { Actions, PageServerLoad } from './$types';
 import { auth } from '$lib/server/lucia';
-import { fail, redirect } from '@sveltejs/kit';
-
-export const load: PageServerLoad = async () => {};
+import type { Actions } from './$types';
 
 export const actions: Actions = {
-	signup: async ({ request, locals }) => {
+	signin: async ({ request, locals }) => {
 		const form = Object.fromEntries(await request.formData());
 
 		const schema = z.object({
@@ -26,17 +24,8 @@ export const actions: Actions = {
 		}
 
 		try {
-			const user = await auth.createUser({
-				primaryKey: {
-					providerId: 'username',
-					providerUserId: result.data.username,
-					password: result.data.password
-				},
-				attributes: {
-					username: result.data.username
-				}
-			});
-			const session = await auth.createSession(user.userId);
+			const key = await auth.useKey('username', result.data.username, result.data.password);
+			const session = await auth.createSession(key.userId);
 			locals.auth.setSession(session);
 			redirect(302, '/');
 		} catch {

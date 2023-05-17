@@ -9,5 +9,10 @@ export const handle: Handle = async ({ event, resolve }) => {
 		if (session) throw redirect(302, '/');
 	}
 
+	if (event.url.pathname.startsWith('/room')) {
+		const session = await event.locals.auth.validate();
+		if (!session) throw redirect(302, '/signin');
+	}
+
 	return await resolve(event);
 };
