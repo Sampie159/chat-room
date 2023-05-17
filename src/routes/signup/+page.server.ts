@@ -36,7 +36,8 @@ export const actions: Actions = {
 			});
 			const session = await auth.createSession(user.userId);
 			locals.auth.setSession(session);
-			redirect(302, '/');
+
+			throw redirect(302, '/');
 		} catch {
 			return fail(400);
 		}

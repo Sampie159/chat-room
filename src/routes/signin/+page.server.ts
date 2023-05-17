@@ -27,7 +27,8 @@ export const actions: Actions = {
 			const key = await auth.useKey('username', result.data.username, result.data.password);
 			const session = await auth.createSession(key.userId);
 			locals.auth.setSession(session);
-			redirect(302, '/');
+
+			throw redirect(302, '/');
 		} catch {
 			return fail(400);
 		}
