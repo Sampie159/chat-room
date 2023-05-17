@@ -23,23 +23,19 @@ export const actions: Actions = {
 			return fail(400, data);
 		}
 
-		try {
-			const user = await auth.createUser({
-				primaryKey: {
-					providerId: 'username',
-					providerUserId: result.data.username,
-					password: result.data.password
-				},
-				attributes: {
-					username: result.data.username
-				}
-			});
-			const session = await auth.createSession(user.userId);
-			locals.auth.setSession(session);
+		const user = await auth.createUser({
+			primaryKey: {
+				providerId: 'username',
+				providerUserId: result.data.username,
+				password: result.data.password
+			},
+			attributes: {
+				username: result.data.username
+			}
+		});
+		const session = await auth.createSession(user.userId);
+		locals.auth.setSession(session);
 
-			throw redirect(302, '/');
-		} catch {
-			return fail(400);
-		}
+		throw redirect(302, '/');
 	}
 };

@@ -23,14 +23,10 @@ export const actions: Actions = {
 			return fail(400, data);
 		}
 
-		try {
-			const key = await auth.useKey('username', result.data.username, result.data.password);
-			const session = await auth.createSession(key.userId);
-			locals.auth.setSession(session);
+		const key = await auth.useKey('username', result.data.username, result.data.password);
+		const session = await auth.createSession(key.userId);
+		locals.auth.setSession(session);
 
-			throw redirect(302, '/');
-		} catch {
-			return fail(400);
-		}
+		throw redirect(302, '/');
 	}
 };
