@@ -5,9 +5,22 @@ import { z } from 'zod';
 import prisma from '$lib/prisma';
 
 export const load: PageServerLoad = async ({ locals }) => {
+	// Authenticate user
 	const { user } = await locals.auth.validateUser();
 	if (!user) throw redirect(302, '/signin');
-	return { user };
+
+	// Load user's rooms.
+	const rooms = await prisma.room.findMany({
+		where: {
+			users: {
+				some: {
+					id: user.userId
+				}
+			}
+		}
+	});
+
+	return { user, rooms };
 };
 
 export const actions: Actions = {

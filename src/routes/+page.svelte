@@ -22,6 +22,14 @@
 			{/if}
 			<input type="submit" class="button" value="Join Room" /> <br />
 		</form>
+		<h2>Rooms</h2>
+		<ul>
+			{#each data.rooms as room}
+				<a href="/room/{room.id}">
+					<li>{room.room_name}</li>
+				</a>
+			{/each}
+		</ul>
 		<form action="?/signout" use:enhance method="post">
 			<input type="submit" class="button" value="Sign Out" />
 		</form>
