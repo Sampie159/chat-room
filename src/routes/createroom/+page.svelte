@@ -2,7 +2,6 @@
 	import { enhance } from '$app/forms';
 	import type { ActionData, PageData } from './$types';
 
-	export let data: PageData;
 	export let form: ActionData;
 </script>
 
@@ -13,7 +12,7 @@
 		<form action="?/createroom" method="post" use:enhance>
 			<label for="room_name">Room Name</label> <br />
 			<input class="input" type="text" id="room_name" name="room_name" /> <br />
-			{#if form?.errors?.room_code}
+			{#if form?.errors.room_name}
 				<p class="error">Invalid room name!</p>
 			{/if}
 			<input type="submit" class="button" value="Create Room" />
