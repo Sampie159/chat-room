@@ -46,19 +46,20 @@ model AuthKey {
 }
 
 model Message {
-  id String @id @unique
+  id String @id @unique @default(uuid())
   content String
-  user AuthUser @relation(references: [id], fields: [user_id], onDelete: Cascade)
-  user_id String
+  created_at DateTime @default(now())
+  user AuthUser @relation(references: [username], fields: [username], onDelete: Cascade)
+  username String
   room Room @relation(references: [id], fields: [room_id], onDelete: Cascade)
   room_id String
 
   @@index([room_id])
-  @@index([user_id])
+  @@index([username])
 }
 
 model Room {
-  id String @id @default(uuid())
+  id String @id @default(uuid()) @unique
   room_name String
   messages Message[]
   users AuthUser[]

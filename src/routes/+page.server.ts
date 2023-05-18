@@ -2,14 +2,11 @@ import { fail, redirect } from '@sveltejs/kit';
 import type { Actions, PageServerLoad } from './$types';
 import { auth } from '$lib/server/lucia';
 import prisma from '$lib/prisma';
-import { roomJoinSchema } from '$lib/schemas';
+import { roomIdSchema } from '$lib/schemas';
 
 export const load: PageServerLoad = async ({ locals }) => {
-	// Authenticate user
 	const { user } = await locals.auth.validateUser();
-	if (!user) throw redirect(302, '/signin');
 
-	// Load user's rooms.
 	const rooms = await prisma.room.findMany({
 		where: {
 			users: {
@@ -37,7 +34,7 @@ export const actions: Actions = {
 	joinroom: async ({ request, locals }) => {
 		const form = Object.fromEntries(await request.formData());
 
-		const result = roomJoinSchema.safeParse(form);
+		const result = roomIdSchema.safeParse(form);
 		if (!result.success) {
 			const data = {
 				data: form,

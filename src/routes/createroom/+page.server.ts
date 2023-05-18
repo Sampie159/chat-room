@@ -1,13 +1,13 @@
 import type { Actions } from './$types';
 import { fail, redirect } from '@sveltejs/kit';
 import prisma from '$lib/prisma';
-import { roomCreateSchema } from '$lib/schemas';
+import { roomNameSchema } from '$lib/schemas';
 
 export const actions: Actions = {
 	createroom: async ({ request, locals }) => {
 		const form = Object.fromEntries(await request.formData());
 
-		const result = roomCreateSchema.safeParse(form);
+		const result = roomNameSchema.safeParse(form);
 
 		if (!result.success) {
 			const data = {

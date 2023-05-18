@@ -5,10 +5,14 @@ export const signSchema = z.object({
 	password: z.string().min(1).max(50)
 });
 
-export const roomJoinSchema = z.object({
+export const roomIdSchema = z.object({
 	room_id: z.string().uuid()
 });
 
-export const roomCreateSchema = z.object({
+export const roomNameSchema = z.object({
 	room_name: z.string().min(4).max(60)
+});
+
+export const messageSchema = z.object({
+	message_content: z.string().min(1)
 });

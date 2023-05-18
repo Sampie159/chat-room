@@ -3,6 +3,7 @@
 	import type { ActionData, PageData } from './$types';
 
 	export let data: PageData;
+	let { rooms, user } = data;
 	export let form: ActionData;
 </script>
 
@@ -10,7 +11,7 @@
 
 <div class="flex h-screen">
 	<div class="flex flex-col m-auto items-center">
-		<p>{data.user.username}</p>
+		<p>{user.username}</p>
 		<a href="/createroom">
 			<button>Create Room</button>
 		</a>
@@ -24,9 +25,9 @@
 		</form>
 		<h2>Rooms</h2>
 		<ul>
-			{#each data.rooms as room}
-				<a href="/room/{room.id}">
-					<li>{room.room_name}</li>
+			{#each rooms as { id, room_name }}
+				<a href="/room/{id}">
+					<li>{room_name}</li>
 				</a>
 			{/each}
 		</ul>
