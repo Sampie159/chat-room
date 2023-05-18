@@ -1,17 +1,13 @@
-import { z } from 'zod';
 import type { Actions } from './$types';
 import { fail, redirect } from '@sveltejs/kit';
 import prisma from '$lib/prisma';
+import { roomCreateSchema } from '$lib/schemas';
 
 export const actions: Actions = {
 	createroom: async ({ request, locals }) => {
 		const form = Object.fromEntries(await request.formData());
 
-		const schema = z.object({
-			room_name: z.string().min(4).max(60)
-		});
-
-		const result = schema.safeParse(form);
+		const result = roomCreateSchema.safeParse(form);
 
 		if (!result.success) {
 			const data = {

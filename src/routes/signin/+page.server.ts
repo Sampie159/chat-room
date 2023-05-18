@@ -1,18 +1,13 @@
 import { redirect, fail } from '@sveltejs/kit';
-import { z } from 'zod';
 import { auth } from '$lib/server/lucia';
 import type { Actions } from './$types';
+import { signSchema } from '$lib/schemas';
 
 export const actions: Actions = {
 	signin: async ({ request, locals }) => {
 		const form = Object.fromEntries(await request.formData());
 
-		const schema = z.object({
-			username: z.string().min(1).max(20),
-			password: z.string().min(1).max(50)
-		});
-
-		const result = schema.safeParse(form);
+		const result = signSchema.safeParse(form);
 
 		if (!result.success) {
 			const data = {

@@ -1,8 +1,8 @@
 import { fail, redirect } from '@sveltejs/kit';
 import type { Actions, PageServerLoad } from './$types';
 import { auth } from '$lib/server/lucia';
-import { z } from 'zod';
 import prisma from '$lib/prisma';
+import { roomJoinSchema } from '$lib/schemas';
 
 export const load: PageServerLoad = async ({ locals }) => {
 	// Authenticate user
@@ -17,6 +17,9 @@ export const load: PageServerLoad = async ({ locals }) => {
 					id: user.userId
 				}
 			}
+		},
+		orderBy: {
+			room_name: 'asc'
 		}
 	});
 
@@ -34,11 +37,7 @@ export const actions: Actions = {
 	joinroom: async ({ request, locals }) => {
 		const form = Object.fromEntries(await request.formData());
 
-		const roomSchema = z.object({
-			room_id: z.string().uuid()
-		});
-
-		const result = roomSchema.safeParse(form);
+		const result = roomJoinSchema.safeParse(form);
 		if (!result.success) {
 			const data = {
 				data: form,
