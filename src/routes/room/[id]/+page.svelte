@@ -1,24 +1,20 @@
 <script lang="ts">
 	import { enhance } from '$app/forms';
-	import { invalidate } from '$app/navigation';
 	import { socket } from '$lib/webSocketConnection';
 	import type { PageData } from './$types';
 
 	export let data: PageData;
+	let { messages } = data;
 
-	socket.on('reloadPage', (room_id) => {
-		refresh('http://localhost:5173/room/' + room_id);
+	socket.on('reloadPage', (message) => {
+		messages = [...messages, message];
 	});
-
-	function refresh(room: string) {
-		invalidate(room);
-	}
 </script>
 
 <div class="flex h-screen">
 	<div class="flex flex-col items-center m-auto">
 		<ul>
-			{#each data.messages as { content, username }}
+			{#each messages as { content, username }}
 				<li>{username}: {content}</li>
 			{/each}
 		</ul>

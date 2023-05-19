@@ -10,7 +10,9 @@ const server = createServer(app);
 const io = new Server(server);
 
 io.on('connection', (socket) => {
-	socket.emit('eventFromServer', 'Hello World');
+	socket.on('newMessage', (message) => {
+		io.emit('reloadPage', message);
+	});
 });
 
 app.use(handler);

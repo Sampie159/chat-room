@@ -28,7 +28,7 @@ export const actions: Actions = {
 			return fail(400);
 		}
 
-		await prisma.message.create({
+		const message = await prisma.message.create({
 			data: {
 				content: result.data.message_content,
 				user: {
@@ -44,6 +44,6 @@ export const actions: Actions = {
 			}
 		});
 
-		socket.emit('newMessage', params.id);
+		socket.emit('newMessage', message);
 	}
 };
