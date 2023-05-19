@@ -5,13 +5,6 @@
 	export let data: PageData;
 	let { rooms, user } = data;
 	export let form: ActionData;
-
-	import { io } from 'socket.io-client';
-	const socket = io();
-
-	socket.on('eventFromServer', (message) => {
-		console.log(message);
-	});
 </script>
 
 <title>Home</title>

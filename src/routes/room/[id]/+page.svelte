@@ -1,9 +1,18 @@
 <script lang="ts">
 	import { enhance } from '$app/forms';
-	import type { ActionData, PageData } from './$types';
+	import { invalidate } from '$app/navigation';
+	import { socket } from '$lib/webSocketConnection';
+	import type { PageData } from './$types';
 
 	export let data: PageData;
-	export let form: ActionData;
+
+	socket.on('reloadPage', (room_id) => {
+		refresh('http://localhost:5173/room/' + room_id);
+	});
+
+	function refresh(room: string) {
+		invalidate(room);
+	}
 </script>
 
 <div class="flex h-screen">

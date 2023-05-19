@@ -2,6 +2,7 @@ import prisma from '$lib/prisma';
 import type { Actions, PageServerLoad } from './$types';
 import { fail } from '@sveltejs/kit';
 import { messageSchema } from '$lib/schemas';
+import { socket } from '$lib/webSocketConnection';
 
 export const load: PageServerLoad = async ({ params }) => {
 	const messages = await prisma.message.findMany({
@@ -43,6 +44,6 @@ export const actions: Actions = {
 			}
 		});
 
-		return { success: true };
+		socket.emit('newMessage', params.id);
 	}
 };
