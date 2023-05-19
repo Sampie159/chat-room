@@ -1,5 +1,5 @@
 import { io } from 'socket.io-client';
 
-const endpoint = 'http://localhost:5173';
+const endpoint = 'http://localhost:3000';
 
 export const socket = io(endpoint);
