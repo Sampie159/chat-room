@@ -60,7 +60,7 @@
 	}
 
 	.button {
-		@apply mx-auto bg-slate-300 font-bold flex items-center text-center w-16 h-7 rounded-md text-slate-900 hover:cursor-pointer mt-3;
+		@apply mx-auto bg-slate-300 font-bold flex items-center text-center w-16 h-7 rounded-md text-slate-900 mt-3;
 	}
 
 	button {
