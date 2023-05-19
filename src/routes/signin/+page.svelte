@@ -20,6 +20,8 @@
 			<input class="input" type="password" id="password" name="password" /> <br />
 			{#if form?.errors?.password}
 				<p class="error">Invalid password!</p>
+			{:else if form?.error}
+				<p class="error">User not found!</p>
 			{/if}
 			<input type="submit" class="button" value="Sign In" />
 

@@ -1,6 +1,6 @@
+import prisma from '$lib/prisma';
 import { auth } from '$lib/server/lucia';
 import { redirect, type Handle } from '@sveltejs/kit';
-import { z } from 'zod';
 
 export const handle: Handle = async ({ event, resolve }) => {
 	event.locals.auth = auth.handleRequest(event);
@@ -20,11 +20,14 @@ export const handle: Handle = async ({ event, resolve }) => {
 		const session = await event.locals.auth.validate();
 		if (!session) throw redirect(302, '/signin');
 
-		try {
-			z.string().uuid().parse(path.substring(6));
-		} catch {
-			throw redirect(302, '/');
-		}
+		const room_id = path.substring(6);
+		const room = await prisma.room.findUnique({
+			where: {
+				id: room_id
+			}
+		});
+
+		if (!room) throw redirect(302, '/');
 	}
 
 	return await resolve(event);

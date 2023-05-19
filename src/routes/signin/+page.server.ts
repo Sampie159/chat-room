@@ -18,10 +18,17 @@ export const actions: Actions = {
 			return fail(400, data);
 		}
 
-		const key = await auth.useKey('username', result.data.username, result.data.password);
-		const session = await auth.createSession(key.userId);
-		locals.auth.setSession(session);
+		try {
+			const key = await auth.useKey('username', result.data.username, result.data.password);
+			const session = await auth.createSession(key.userId);
+			locals.auth.setSession(session);
+		} catch {
+			const error = {
+				error: true
+			};
 
+			return fail(400, error);
+		}
 		throw redirect(302, '/');
 	}
 };
