@@ -20,6 +20,8 @@
 			<input class="input" type="password" id="password" name="password" /> <br />
 			{#if form?.errors?.password}
 				<p class="error">Invalid password!</p>
+			{:else if form?.userExists}
+				<p class="error">Username already in use.</p>
 			{/if}
 			<input type="submit" class="button" value="Sign Up" />
 

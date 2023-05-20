@@ -2,6 +2,7 @@ import type { Actions } from './$types';
 import { auth } from '$lib/server/lucia';
 import { fail, redirect } from '@sveltejs/kit';
 import { signSchema } from '$lib/schemas';
+import prisma from '$lib/prisma';
 
 export const actions: Actions = {
 	signup: async ({ request, locals }) => {
@@ -18,18 +19,29 @@ export const actions: Actions = {
 			return fail(400, data);
 		}
 
-		const user = await auth.createUser({
-			primaryKey: {
-				providerId: 'username',
-				providerUserId: result.data.username,
-				password: result.data.password
-			},
-			attributes: {
-				username: result.data.username
-			}
-		});
-		const session = await auth.createSession(user.userId);
-		locals.auth.setSession(session);
+		try {
+			await prisma.authUser.findUnique({
+				where: {
+					username: result.data.username
+				}
+			});
+
+			return fail(400, { userExists: true });
+		} catch {
+			const user = await auth.createUser({
+				primaryKey: {
+					providerId: 'username',
+					providerUserId: result.data.username,
+					password: result.data.password
+				},
+				attributes: {
+					username: result.data.username
+				}
+			});
+
+			const session = await auth.createSession(user.userId);
+			locals.auth.setSession(session);
+		}
 
 		throw redirect(302, '/');
 	}
