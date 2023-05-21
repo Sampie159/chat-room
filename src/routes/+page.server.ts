@@ -35,14 +35,7 @@ export const actions: Actions = {
 		const form = Object.fromEntries(await request.formData());
 
 		const result = roomIdSchema.safeParse(form);
-		if (!result.success) {
-			const data = {
-				data: form,
-				errors: result.error.flatten().fieldErrors
-			};
-
-			return fail(400, data);
-		}
+		if (!result.success) return fail(400, { invalidId: true });
 
 		const session = await locals.auth.validate();
 		if (!session) return fail(400);

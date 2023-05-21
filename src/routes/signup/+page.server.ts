@@ -19,29 +19,29 @@ export const actions: Actions = {
 			return fail(400, data);
 		}
 
-		try {
-			await prisma.authUser.findUnique({
-				where: {
-					username: result.data.username
-				}
-			});
+		const user = await prisma.authUser.findUnique({
+			where: {
+				username: result.data.username
+			}
+		});
 
+		if (user) {
 			return fail(400, { userExists: true });
-		} catch {
-			const user = await auth.createUser({
-				primaryKey: {
-					providerId: 'username',
-					providerUserId: result.data.username,
-					password: result.data.password
-				},
-				attributes: {
-					username: result.data.username
-				}
-			});
-
-			const session = await auth.createSession(user.userId);
-			locals.auth.setSession(session);
 		}
+
+		const newUser = await auth.createUser({
+			primaryKey: {
+				providerId: 'username',
+				providerUserId: result.data.username,
+				password: result.data.password
+			},
+			attributes: {
+				username: result.data.username
+			}
+		});
+
+		const session = await auth.createSession(newUser.userId);
+		locals.auth.setSession(session);
 
 		throw redirect(302, '/');
 	}
