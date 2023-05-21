@@ -14,5 +14,5 @@ export const roomNameSchema = z.object({
 });
 
 export const messageSchema = z.object({
-	message_content: z.string().min(1)
+	message_content: z.string().min(1).max(256)
 });

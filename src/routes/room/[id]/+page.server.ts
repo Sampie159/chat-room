@@ -5,9 +5,11 @@ import { messageSchema } from '$lib/schemas';
 import { socket } from '$lib/webSocketConnection';
 
 export const load: PageServerLoad = async ({ params }) => {
+	const id = params.id;
+
 	const messages = await prisma.message.findMany({
 		where: {
-			room_id: params.id
+			room_id: id
 		},
 		orderBy: {
 			created_at: 'asc'
@@ -15,7 +17,13 @@ export const load: PageServerLoad = async ({ params }) => {
 		take: 1000
 	});
 
-	return { messages };
+	const { room_name } = await prisma.room.findUnique({
+		where: {
+			id
+		}
+	});
+
+	return { messages, id, room_name };
 };
 
 export const actions: Actions = {
@@ -24,16 +32,14 @@ export const actions: Actions = {
 
 		const result = messageSchema.safeParse(form);
 		const session = await locals.auth.validate();
-		if (!result.success || !session) {
-			return fail(400);
-		}
+		if (!result.success) return fail(400, { invalidMessage: true });
 
 		const message = await prisma.message.create({
 			data: {
 				content: result.data.message_content,
 				user: {
 					connect: {
-						id: session.userId
+						id: session?.userId
 					}
 				},
 				room: {
