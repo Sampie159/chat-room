@@ -3,7 +3,7 @@ import { createServer } from 'http';
 import { Server } from 'socket.io';
 import { handler } from '../build/handler.js';
 
-const port = 3000;
+const port = process.env.PORT;
 const app = express();
 const server = createServer(app);
 
@@ -17,4 +17,4 @@ io.on('connection', (socket) => {
 
 app.use(handler);
 
-server.listen(port);
+server.listen(port, '0.0.0.0');
