@@ -7,7 +7,11 @@ const port = process.env.PORT;
 const app = express();
 const server = createServer(app);
 
-const io = new Server(server);
+const io = new Server(server, {
+	cors: {
+		origin: 'https://0.0.0.0:' + port
+	}
+});
 
 io.on('connection', (socket) => {
 	socket.on('newMessage', (message) => {
