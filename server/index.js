@@ -9,7 +9,7 @@ const server = createServer(app);
 
 const io = new Server(server, {
 	cors: {
-		origin: 'https://0.0.0.0:' + port
+		origin: '0.0.0.0:' + port
 	}
 });
 
