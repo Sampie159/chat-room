@@ -9,7 +9,7 @@ const server = createServer(app);
 
 const io = new Server(server, {
 	cors: {
-		origin: '0.0.0.0:' + port
+		origin: 'https://samschatroom.up.railway.app' + port
 	}
 });
 
