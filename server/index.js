@@ -1,5 +1,5 @@
 import express from 'express';
-import { createServer } from 'http';
+import { createServer } from 'https';
 import { Server } from 'socket.io';
 import { handler } from '../build/handler.js';
 
@@ -14,8 +14,14 @@ const io = new Server(server, {
 });
 
 io.on('connection', (socket) => {
-	socket.on('newMessage', (message) => {
-		io.emit('reloadPage', message);
+	socket.on('newMessage', (message, room) => {
+		socket.to(room).emit('reloadPage', message);
+	});
+	socket.on('joinRoom', (room) => {
+		socket.join(room);
+	});
+	socket.on('leaveRoom', (room) => {
+		socket.leave(room);
 	});
 });
 

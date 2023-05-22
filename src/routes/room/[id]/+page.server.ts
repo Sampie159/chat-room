@@ -50,6 +50,6 @@ export const actions: Actions = {
 			}
 		});
 
-		socket.emit('newMessage', message);
+		socket.emit('newMessage', message, params.id);
 	}
 };

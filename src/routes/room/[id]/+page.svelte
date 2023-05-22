@@ -2,6 +2,7 @@
 	import { enhance } from '$app/forms';
 	import Message from '$lib/components/Message.svelte';
 	import { socket } from '$lib/webSocketConnection';
+	import { onDestroy, onMount } from 'svelte';
 	import type { ActionData, PageData } from './$types';
 
 	export let data: PageData;
@@ -15,6 +16,14 @@
 	function copyRoomCode() {
 		navigator.clipboard.writeText(id);
 	}
+
+	onMount(() => {
+		socket.emit('joinRoom', id);
+	});
+
+	onDestroy(() => {
+		socket.emit('leaveRoom', id);
+	});
 </script>
 
 <div class="outerDiv">
