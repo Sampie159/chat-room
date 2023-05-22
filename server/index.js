@@ -17,4 +17,4 @@ io.on('connection', (socket) => {
 
 app.use(handler);
 
-server.listen(port, '0.0.0.0');
+server.listen(port);
