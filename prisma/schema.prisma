@@ -47,7 +47,7 @@ model AuthKey {
 
 model Message {
   id String @id @unique @default(uuid())
-  content String
+  content String @db.VarChar(256)
   created_at DateTime @default(now())
   user AuthUser @relation(references: [username], fields: [username], onDelete: Cascade)
   username String

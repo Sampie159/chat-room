@@ -42,7 +42,7 @@
 			<input class="input" type="text" name="message_content" id="message_content" autofocus />
 			<br />
 			{#if form?.invalidMessage}
-				<p class="error">Too long!</p>
+				<p class="error">Either too long or empty!</p>
 			{/if}
 			<input type="submit" class="button" value="Send" />
 		</form>
