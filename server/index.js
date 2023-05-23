@@ -1,5 +1,5 @@
 import express from 'express';
-import { createServer } from 'http';
+import { createServer } from 'https';
 import { Server } from 'socket.io';
 import { handler } from '../build/handler.js';
 
@@ -23,4 +23,4 @@ io.on('connection', (socket) => {
 
 app.use(handler);
 
-server.listen(port, '0.0.0.0');
+server.listen(port);
