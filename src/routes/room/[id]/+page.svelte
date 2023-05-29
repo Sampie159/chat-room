@@ -26,6 +26,8 @@
 	});
 </script>
 
+<title>{room_name}</title>
+
 <div class="outerDiv">
 	<h1 class="roomName">{room_name}</h1>
 	<div class="innerDiv">
@@ -43,6 +45,8 @@
 			<br />
 			{#if form?.invalidMessage}
 				<p class="error">Either too long or empty!</p>
+			{:else if form?.ratelimited}
+				<p class="error">You are sending too many messages!</p>
 			{/if}
 			<input type="submit" class="button" value="Send" />
 		</form>

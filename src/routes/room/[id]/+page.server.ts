@@ -3,6 +3,7 @@ import type { Actions, PageServerLoad } from './$types';
 import { fail } from '@sveltejs/kit';
 import { messageSchema } from '$lib/schemas';
 import { socket } from '$lib/webSocketConnection';
+import { ratelimit } from '$lib/server/ratelimiter';
 
 export const load: PageServerLoad = async ({ params }) => {
 	const id = params.id;
@@ -33,6 +34,9 @@ export const actions: Actions = {
 		const result = messageSchema.safeParse(form);
 		const session = await locals.auth.validate();
 		if (!result.success) return fail(400, { invalidMessage: true });
+
+		const { success } = await ratelimit.limit(session!.userId);
+		if (!success) return fail(400, { ratelimited: true });
 
 		const message = await prisma.message.create({
 			data: {
